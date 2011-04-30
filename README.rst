@@ -74,7 +74,7 @@ MARC Analysis
 Usage examples::
 
     ./analyse_marc --help              # show help
-    ./analyse_marc -l                  # list all xml files to be analysed
+    ./analyse_marc -l                  # list all marc files to be analysed
     ./analyse_marc                     # analyse all marc files in the current path
     ./analyse_marc > analysis.csv      # analyse all marc files in the current path and write the results to a csv file.
     ./analyse_marc path/to/marc/       # analyse all marc files in the current path
