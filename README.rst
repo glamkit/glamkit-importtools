@@ -52,7 +52,7 @@ min/max_valency
 ``min_valency`` and ``max_valency`` will tell you the minimum and maximum number of these elements you'll have to deal with each time you encounter them. If a min_valency is 0, it means the element is optional. If a max_valency is 1 it means that it's a singleton value. If max_valency is more than 1, it means that the element is repeated to make up a list.
 
 samples
-~~~~~~~~~~~~~
+~~~~~~~
 
 ``samples`` is a particularly useful field. Apart from seeing the values to discern their likely data type, you can see the variety of values produced.
 
@@ -64,7 +64,6 @@ attributes
 ~~~~~~~~~~
 
 This field lists out all the attributes found for the tag, and a sample of their values.
-
 
 MARC Analysis
 =============
