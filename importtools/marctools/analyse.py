@@ -1,5 +1,5 @@
 from pymarc import MARCReader
-import csv
+from unicode_csv import UnicodeWriter
 import sys
 from pprint import pprint
 from tags import meaning
@@ -67,7 +67,7 @@ def multifile_iter_records(files, sample_length, analysis={}):
     for f in files:
         if not hasattr(f, 'read'):
             f = open(f)
-        reader = MARCReader(f)
+        reader = MARCReader(f, to_unicode=True)
         for record in reader:
             n += 1
             if n % 1000 == 0:
@@ -130,7 +130,7 @@ def marcanalyse(files, sample_length=5):
     csv_header=("tag", "subfield", "tag_meaning", "record_count", "min_valency", "max_valency","samples")
 
     
-    writer = csv.writer(sys.stdout)
+    writer = UnicodeWriter(sys.stdout)
     writer.writerow(csv_header)
     
     listanalysis = [x for x in analysis.iteritems()]
@@ -138,13 +138,13 @@ def marcanalyse(files, sample_length=5):
 
     for key, value in listanalysis:
         v = []
-        v.append('"%s"' % key) #tag
-        v.append("") # subfield
+        v.append(u'"%s"' % key) #tag
+        v.append(u"") # subfield
         v.append(meaning(key)) #tag_meaning
-        v.append(value['count']) #record_count
-        v.append(value['min_valency'])
-        v.append(value['max_valency'])
-        v.append("\n\n".join(value['samples']))
+        v.append(unicode(value['count'])) #record_count
+        v.append(unicode(value['min_valency']))
+        v.append(unicode(value['max_valency']))
+        v.append(u"\r\r".join(value['samples']))
         writer.writerow(v)
         
         listanalysis = [x for x in value['subfields'].iteritems()]
@@ -154,10 +154,10 @@ def marcanalyse(files, sample_length=5):
             v.append("") #tag
             v.append(subfield) # subfield
             v.append(meaning(key, subfield)) #tag_meaning
-            v.append(value['count']) #record_count
-            v.append(value['min_valency'])
-            v.append(value['max_valency'])
-            v.append("\r\r".join(value['samples']))
+            v.append(unicode(value['count'])) #record_count
+            v.append(unicode(value['min_valency']))
+            v.append(unicode(value['max_valency']))
+            v.append(u"\r\r".join(value['samples']))
             writer.writerow(v)
             
         
