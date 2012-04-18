@@ -22,7 +22,7 @@ SKIP_UNTIL = 0
 def _fast_iter(context, callable_start, callable_end, *args, **kwargs):
     _iter_count = kwargs.pop('_iter_count', 0)
     for event, elem in context:
-        if _iter_count < SKIP_UNTIL:
+        if _iter_count >= SKIP_UNTIL:
             if event=="start":
                 status = callable_start(elem, *args, **kwargs)
             elif event=="end":
