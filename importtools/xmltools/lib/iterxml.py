@@ -17,20 +17,23 @@ from constants import BREAK, DISCARD_AFTER
 import sys
 from files import File
 
+SKIP_UNTIL = 0
+
 def _fast_iter(context, callable_start, callable_end, *args, **kwargs):
     _iter_count = kwargs.pop('_iter_count', 0)
     for event, elem in context:
-        if event=="start":
-            status = callable_start(elem, *args, **kwargs)
-        elif event=="end":
-            status = callable_end(elem, *args, **kwargs)       
-        if status is not None and status & BREAK:
-            break
-        if event=="end":
-            if status is None or status & DISCARD_AFTER:
-                elem.clear()
-                while elem.getprevious() is not None: #delete parent if I am the last item.
-                    del elem.getparent()[0]
+        if _iter_count < SKIP_UNTIL:
+            if event=="start":
+                status = callable_start(elem, *args, **kwargs)
+            elif event=="end":
+                status = callable_end(elem, *args, **kwargs)
+            if status is not None and status & BREAK:
+                break
+            if event=="end":
+                if status is None or status & DISCARD_AFTER:
+                    elem.clear()
+                    while elem.getprevious() is not None: #delete parent if I am the last item.
+                        del elem.getparent()[0]
         _iter_count += 1
         if _iter_count % 10000 == 0:
             sys.stderr.write("processing %s elements...\n" % _iter_count)
@@ -50,6 +53,7 @@ def iter_elems(xml_file, callable_start, callable_end, encoding=None, *args, **k
 
 def multifile_iter_elems(xml_files, callable_start, callable_end, encoding=None, *args, **kwargs):
     _iter_count = 0
+
     for f in xml_files:
         kwargs['_iter_count'] = _iter_count
         _iter_count = iter_elems(f, callable_start, callable_end, encoding, *args, **kwargs)

@@ -45,8 +45,11 @@ class MongoSaver(BaseProcessor):
         except Exception as e:
             if DEBUG_ON_IMPORT_SAVE_ERROR:
                 from pprint import pprint
+                print "Exception e"
                 pprint(e)
+                print "XML2Dict u"
                 pprint(u)
+                print "Cleaned dictionary d"
                 pprint(d)
                 import pdb; pdb.set_trace()
             else:
