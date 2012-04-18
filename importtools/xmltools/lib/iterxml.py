@@ -55,5 +55,6 @@ def multifile_iter_elems(xml_files, callable_start, callable_end, encoding=None,
     _iter_count = 0
 
     for f in xml_files:
+        sys.stderr.write("===\nprocessing file %s\n===\n" % f)
         kwargs['_iter_count'] = _iter_count
         _iter_count = iter_elems(f, callable_start, callable_end, encoding, *args, **kwargs)
